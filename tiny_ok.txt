@@ -1,0 +1,13 @@
+{ Exemplo de código TINY }
+
+x := 10;
+teste := 10;
+
+if (x - 5) < 10 then
+    repeat
+        write "Digite um número: ";
+        read x;
+    until x > 0;
+else
+    write "x é maior ou igual a 10.";
+end
