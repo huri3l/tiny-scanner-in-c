@@ -4,6 +4,7 @@
 #include <string.h>
 
 #define MAX_TOKENS 1000
+#define COMMENT_LENGTH 1000
 #define TOKEN_LENGTH 20
 #define TOTAL_WORDS 8
 #define TOTAL_SYMBOLS 11
@@ -12,7 +13,7 @@ char *words[] = {"if", "then", "else", "end", "repeat", "until", "read", "write"
 char *symbols[] = {"+", "-", "*", "/", ";", "=", "<", ">", "(", ")", ":="};
 
 typedef enum {
-  WORD, IDENTIFIER, NUM, STR, SYMBOL, UNKNOWN, LENGTH_ERROR
+  WORD, IDENTIFIER, NUM, STR, SYMBOL, UNKNOWN, COMMENT, LENGTH_ERROR
 } TokenType;
 
 typedef struct {
@@ -73,9 +74,25 @@ int main() {
       reset(raw_token);
     }
     else if(fdata == '{') {
+      char comment_token[COMMENT_LENGTH];
+      int comment_token_idx = 0;
+
+      comment_token[comment_token_idx] = fdata;
+
       while ((fdata = getchar()) != '}') {
-        continue;
+        comment_token[comment_token_idx++] = fdata;
       }
+
+      comment_token[comment_token_idx++] = '\0';
+
+      token.data = malloc(sizeof(char) * (comment_token_idx));
+      token.type = COMMENT;
+      token.line = line_counter;
+      assign(token.data, comment_token);
+      tokens[tokens_quantity++] = token;
+
+      comment_token_idx = 0;
+      reset(comment_token);
     } 
     else if(fdata == '"') {
       int string_counter = 0;
@@ -373,6 +390,8 @@ const char* getTokenType(TokenType type) {
     return "SIMBOLO";
   else if(type == UNKNOWN)
     return "DESCONHECIDO";
+  else if(type == COMMENT)
+    return "COMENTÁRIO";
   else if(type == LENGTH_ERROR)
     return "LIMITE DE CARACTERES EXCEDIDO";
 }

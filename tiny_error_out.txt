@@ -1,0 +1,29 @@
+COMENTÁRIO na Linha 1:  Exemplo de código TINY com erro 
+IDENTIFICADOR na Linha 3: x
+SIMBOLO na Linha 3: :=
+NUMERO na Linha 3: 10
+SIMBOLO na Linha 3: ;
+IDENTIFICADOR na Linha 4: teste
+SIMBOLO na Linha 4: :=
+NUMERO na Linha 4: 10
+SIMBOLO na Linha 4: ;
+PALAVRA RESERVADA na Linha 6: if
+IDENTIFICADOR na Linha 6: x
+SIMBOLO na Linha 6: <
+NUMERO na Linha 6: 10
+PALAVRA RESERVADA na Linha 6: then
+PALAVRA RESERVADA na Linha 7: repeat
+PALAVRA RESERVADA na Linha 8: write
+STRING na Linha 9: Digite um número: 
+PALAVRA RESERVADA na Linha 9: read
+DESCONHECIDO na Linha 9: x-
+SIMBOLO na Linha 9: ;
+PALAVRA RESERVADA na Linha 10: until
+IDENTIFICADOR na Linha 10: x
+SIMBOLO na Linha 10: >
+NUMERO na Linha 10: 0
+SIMBOLO na Linha 10: ;
+PALAVRA RESERVADA na Linha 11: else
+PALAVRA RESERVADA na Linha 12: write
+LIMITE DE CARACTERES EXCEDIDO na Linha 13: x é maior ou igual a
+PALAVRA RESERVADA na Linha 13: end
