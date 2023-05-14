@@ -50,9 +50,11 @@ int main() {
   while ((fdata = getchar()) != EOF) {
     raw_token[raw_token_idx] = fdata;
 
+    // Contador de linhas e verificador de Token 
     if(fdata == '\n') {
       raw_token[raw_token_idx] = '\0';
       
+      // Prioridade de palavras reservadas sobre identificadores
       if(isWord(raw_token)) {
         token.data = malloc(sizeof(char) * (raw_token_idx + 1));
         token.type = WORD;
@@ -73,6 +75,8 @@ int main() {
       raw_token_idx = 0;
       reset(raw_token);
     }
+
+    // Identificador de comentários
     else if(fdata == '{') {
       char comment_token[COMMENT_LENGTH];
       int comment_token_idx = 0;
@@ -94,6 +98,8 @@ int main() {
       comment_token_idx = 0;
       reset(comment_token);
     } 
+
+    // Identificador de strings
     else if(fdata == '"') {
       int string_counter = 0;
       int length_error = 0;
@@ -104,15 +110,9 @@ int main() {
 
         if(string_counter > TOKEN_LENGTH) {
           length_error = 1;
-          break;
         }
       }
-      raw_token[raw_token_idx] = '\0';
-      
-      while ((fdata = getchar()) != '\n') {
-        continue;
-      }
-      line_counter ++;
+      raw_token[raw_token_idx] = '\0';      
 
       if(length_error) {
         token.type = LENGTH_ERROR;
@@ -128,24 +128,26 @@ int main() {
       raw_token_idx = 0;
       reset(raw_token);
     }
+
+    // Identificador de símbolos
     else if(isSymbol(raw_token) || fdata == ':') {
       if(raw_token_idx > 0) {
         raw_token[raw_token_idx] = '\0';
         
         if(isWord(raw_token)) {
-          token.data = malloc(sizeof(char) * getLength(raw_token) + 1);
+          token.data = malloc(sizeof(char) * raw_token_idx + 1);
           token.type = WORD;
           assign(token.data, raw_token);
           tokens[tokens_quantity++] = token;
         }
         else if(isIdentifier(raw_token)) {
-          token.data = malloc(sizeof(char) * getLength(raw_token) + 1);
+          token.data = malloc(sizeof(char) * raw_token_idx + 1);
           token.type = IDENTIFIER;
           assign(token.data, raw_token);
           tokens[tokens_quantity++] = token;
         }
         else if (isNumber(raw_token)) {
-          token.data = malloc(sizeof(char) * getLength(raw_token) + 1);
+          token.data = malloc(sizeof(char) * raw_token_idx + 1);
           token.type = NUM;
           assign(token.data, raw_token);
           tokens[tokens_quantity++] = token;
@@ -164,7 +166,7 @@ int main() {
       }
 
       if(isSymbol(raw_token)) {
-        token.data = malloc(sizeof(char) * getLength(raw_token) + 1);
+        token.data = malloc(sizeof(char) * raw_token_idx + 1);
         token.type = SYMBOL;
         assign(token.data, raw_token);
         tokens[tokens_quantity++] = token;
@@ -173,24 +175,26 @@ int main() {
       raw_token_idx = 0;
       reset(raw_token); 
     }
+
+    // Identificação de parentêses e seus tokens
     else if(fdata == '(' || fdata == ')') {
       if(raw_token_idx > 0) {
         raw_token[raw_token_idx] = '\0';
         
         if(isWord(raw_token)) {
-          token.data = malloc(sizeof(char) * getLength(raw_token) + 1);
+          token.data = malloc(sizeof(char) * raw_token_idx + 1);
           token.type = WORD;
           assign(token.data, raw_token);
           tokens[tokens_quantity++] = token;
         }
         else if(isIdentifier(raw_token)) {
-          token.data = malloc(sizeof(char) * getLength(raw_token) + 1);
+          token.data = malloc(sizeof(char) * raw_token_idx + 1);
           token.type = IDENTIFIER;
           assign(token.data, raw_token);
           tokens[tokens_quantity++] = token;
         }
         else if (isNumber(raw_token)) {
-          token.data = malloc(sizeof(char) * getLength(raw_token) + 1);
+          token.data = malloc(sizeof(char) * raw_token_idx + 1);
           token.type = NUM;
           assign(token.data, raw_token);
           tokens[tokens_quantity++] = token;
@@ -209,7 +213,7 @@ int main() {
       }
 
       if(isSymbol(raw_token)) {
-        token.data = malloc(sizeof(char) * getLength(raw_token) + 1);
+        token.data = malloc(sizeof(char) * raw_token_idx + 1);
         token.type = SYMBOL;
         assign(token.data, raw_token);
         tokens[tokens_quantity++] = token;
@@ -218,37 +222,33 @@ int main() {
       raw_token_idx = 0;
       reset(raw_token); 
     }
-    else if(isalpha(fdata)) {
-      raw_token[raw_token_idx++] = fdata;
-    }
-    else if(isdigit(fdata)) {
-      raw_token[raw_token_idx++] = fdata;
-    } 
+
+    // Delimitadores e verificação de tokens
     else if(fdata == ' ' || fdata == ';' || fdata == '\t') {
       raw_token[raw_token_idx] = '\0';
 
       if(isWord(raw_token)) {
-        token.data = malloc(sizeof(char) * getLength(raw_token) + 1);
+        token.data = malloc(sizeof(char) * raw_token_idx + 1);
         token.type = WORD;
         token.line = line_counter;
         assign(token.data, raw_token);
         tokens[tokens_quantity++] = token;
       }
       else if (isNumber(raw_token)) {
-        token.data = malloc(sizeof(char) * getLength(raw_token) + 1);
+        token.data = malloc(sizeof(char) * raw_token_idx + 1);
         token.type = NUM;
         token.line = line_counter;
         assign(token.data, raw_token);
         tokens[tokens_quantity++] = token;
       }
       else if(isSymbol(raw_token)) {
-        token.data = malloc(sizeof(char) * getLength(raw_token) + 1);
+        token.data = malloc(sizeof(char) * raw_token_idx + 1);
         token.type = SYMBOL;
         token.line = line_counter;
         assign(token.data, raw_token);
         tokens[tokens_quantity++] = token;
       } else if(isIdentifier(raw_token)) {
-        token.data = malloc(sizeof(char) * getLength(raw_token) + 1);
+        token.data = malloc(sizeof(char) * raw_token_idx + 1);
         token.type = IDENTIFIER;
         token.line = line_counter;
         assign(token.data, raw_token);
@@ -266,8 +266,15 @@ int main() {
       raw_token_idx = 0;
       reset(raw_token);
     }
+
+    // Verificador do caractere lido para concatenação ao token a ser analisado
+    else if(isalpha(fdata) || isdigit(fdata)) {
+      raw_token[raw_token_idx++] = fdata;
+    }
+
+    // Registro de token desconhecido
     else {
-      token.data = malloc(sizeof(char) * getLength(raw_token) + 1);
+      token.data = malloc(sizeof(char) * raw_token_idx + 1);
       token.type = UNKNOWN;
       token.line = line_counter;
       assign(token.data, raw_token);
@@ -285,6 +292,9 @@ int main() {
   return 0;
 }
 
+
+
+// Obtém o tamanho de um vetor de char
 size_t getLength(const char* str) {
   size_t len = 0;
 
@@ -296,6 +306,7 @@ size_t getLength(const char* str) {
   return len;
 }
 
+// Verifica igualdade entre as strings
 int isEqual(const char* str1, const char* str2) {
   while (*str1 != '\0' && *str2 != '\0') {
     if (*str1 != *str2) return (*str1 - *str2);
@@ -307,6 +318,7 @@ int isEqual(const char* str1, const char* str2) {
   return (*str1 - *str2);
 }
 
+// Atribui um vetor de char à outro
 char* assign(char* dest, const char* src) {
   char* ptr = dest;
   while (*src != '\0') {
@@ -317,6 +329,7 @@ char* assign(char* dest, const char* src) {
   return dest;
 }
 
+// Limpa um vetor de char
 void reset(void* ptr) {
   char* p = (char*) ptr;
 
@@ -327,6 +340,7 @@ void reset(void* ptr) {
   return;
 }
 
+// Valida se é um símbolo
 int isSymbol(char *token) {
   for (int i = 0; i < TOTAL_SYMBOLS; i++) {
     if (isEqual(token, symbols[i]) == 0) {
@@ -337,6 +351,7 @@ int isSymbol(char *token) {
   return 0;
 }
 
+// Valida se é um identificador
 int isIdentifier(char *token) {
   int is_alpha = 0;
 
@@ -352,6 +367,7 @@ int isIdentifier(char *token) {
   return is_alpha;
 }
 
+// Validar se é uma constante numérica
 int isNumber(char *token) {
   int has_digits = 0;
 
@@ -367,6 +383,7 @@ int isNumber(char *token) {
   return has_digits;
 }
 
+// Validar se é uma palavra reservada
 int isWord(char *token) {
   for (int i = 0; i < TOTAL_WORDS; i++) {
     if (isEqual(token, words[i]) == 0) {
@@ -377,6 +394,7 @@ int isWord(char *token) {
   return 0;
 }
 
+// Trata o tipo de token, retornando uma string
 const char* getTokenType(TokenType type) {
   if(type == WORD)
     return "PALAVRA RESERVADA";
