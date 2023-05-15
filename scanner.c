@@ -81,16 +81,28 @@ int main() {
       char comment_token[COMMENT_LENGTH];
       int comment_token_idx = 0;
 
+      int comment_counter = 0;
+      int length_error = 0;
+
       comment_token[comment_token_idx] = fdata;
 
       while ((fdata = getchar()) != '}') {
         comment_token[comment_token_idx++] = fdata;
-      }
+        comment_counter++;
 
+        if(comment_counter > COMMENT_LENGTH) {
+          length_error = 1;
+        }
+      }
       comment_token[comment_token_idx++] = '\0';
 
+      if(length_error) {
+        token.type = LENGTH_ERROR;
+      } else {
+        token.type = COMMENT;
+      }
+
       token.data = malloc(sizeof(char) * (comment_token_idx));
-      token.type = COMMENT;
       token.line = line_counter;
       assign(token.data, comment_token);
       tokens[tokens_quantity++] = token;
