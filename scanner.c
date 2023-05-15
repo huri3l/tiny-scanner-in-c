@@ -1,3 +1,15 @@
+/* instituição, curso, disciplina, atividade, nome(s), data, um resumo do trabalho.
+  Instituição: Instituto Federal Sul-rio-grandense
+  Curso: Ciências da Computação
+  Matéria: Compiladores
+  Atividade: Analisador Léxico (Scanner) em C para TINY
+  Alunos: Elias Iuri Sobieski Dalvite e Huriel Ferreira Lopes
+  Data: 14/05/2023
+
+  Analisador Léxico para a Linguagem TINY implementado em C, para entendimento prático
+  de analisadores léxicos no contexto de Compiladores.
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
