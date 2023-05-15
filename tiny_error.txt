@@ -1,6 +1,6 @@
 { Exemplo de código TINY com erro }
 
-x := 10;
+x : 10;
 teste := 10;
 
 if x < 10 then

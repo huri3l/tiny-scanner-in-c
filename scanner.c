@@ -182,6 +182,11 @@ int main() {
         token.type = SYMBOL;
         assign(token.data, raw_token);
         tokens[tokens_quantity++] = token;
+      } else {
+        token.data = malloc(sizeof(char) * raw_token_idx + 1);
+        token.type = UNKNOWN;
+        assign(token.data, raw_token);
+        tokens[tokens_quantity++] = token;
       }
 
       raw_token_idx = 0;
@@ -227,6 +232,11 @@ int main() {
       if(isSymbol(raw_token)) {
         token.data = malloc(sizeof(char) * raw_token_idx + 1);
         token.type = SYMBOL;
+        assign(token.data, raw_token);
+        tokens[tokens_quantity++] = token;
+      } else {
+        token.data = malloc(sizeof(char) * raw_token_idx + 1);
+        token.type = UNKNOWN;
         assign(token.data, raw_token);
         tokens[tokens_quantity++] = token;
       }
